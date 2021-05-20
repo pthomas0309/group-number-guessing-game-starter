@@ -20,7 +20,7 @@ function addGuess(){
   // push it to that array
   // make a post request with newGuess -> ajax
   $.ajax({
-    url: '/guesses',
+    url: '/new-guesses',
     method: 'POST',
     data: newGuess
   }).then(response => {
@@ -42,14 +42,14 @@ function getRequest(){
   // go to server route /guesses
   $.ajax({
     method: 'GET',
-    url: '/guesses'
+    url: '/new-guesses'
   }).then(function (response){
     console.log(response);
     //empty DOM
     $('#guess').empty();
-  // append guesses to the DOM
+  // append guesses to the DOM of localhost:5000/new-guesses
   for (let guess of response){
-    $('#guesses').append(`
+    $('#guess').append(`
       <li>Player 1\'s guess: ${guess.playerOne}</li>
       <li>Player 2\'s guess: ${guess.playerTwo}</li>
       <li>Player 3\'s guess: ${guess.playerThree}</li>
