@@ -1,2 +1,3 @@
+emptyArray = [];
 // exporting the things
-let newGuessesArray = [];
+module.exports = emptyArray;

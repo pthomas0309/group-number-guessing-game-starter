@@ -1,0 +1,30 @@
+h1 {
+    text-align: center;
+    margin-top: 16px;
+}
+
+body {
+    background-color: #a2a2d0;
+}
+
+ul {
+    background-color: #6495ed;
+}
+
+ul li {
+    background-color: #a2a2d0;
+}
+
+#inputs {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+#guess {
+    margin-left: 32px;
+    margin-bottom: 32px;
+}
+
+
+

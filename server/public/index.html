@@ -7,21 +7,22 @@
   <title>Guess A Number!</title>
   <script src="vendors/jquery.min.js"></script>
   <script src="scripts/client.js"></script>
+  <link rel="stylesheet" href="vendors/bootstrap.css">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <h1>YOUR GAME HERE!</h1>
     <div id="inputs">
-      <input type="text" id="playerOneIn" placeholder="Player One's Guess">
-      <input type="text" id="playerTwoIn" placeholder="Player Two's Guess">
-      <input type="text" id="playerThreeIn" placeholder="Player Three's Guess">
-      <input type="text" id="playerFourIn" placeholder="Player Four's Guess">
-      <button id="submitBtn">Submit</button>
+      <input type="number" id="playerOneIn" placeholder="Player One's Guess">
+      <input type="number" id="playerTwoIn" placeholder="Player Two's Guess">
+      <input type="number" id="playerThreeIn" placeholder="Player Three's Guess">
+      <input type="number" id="playerFourIn" placeholder="Player Four's Guess">
+      <button id="submitBtn" class="btn btn-outline-dark">Submit</button>
     </div>
     <div id="gamesPlayed">
-      <h1>Number of Guesses Made<section id="numGames"></section></h1>
+      <h1>Number of Guesses Made: <section id="numGames"></section></h1>
     </div>
-    <ul id="guess"></ul>
+    <ul id="guess" class="list-group"></ul>
 </body>
 </html>

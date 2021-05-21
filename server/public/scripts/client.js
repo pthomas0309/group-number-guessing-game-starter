@@ -1,11 +1,12 @@
 $(document).ready(handleReady);
 
+let randomCheckArray = [];
+let guessesArray = [];
+
 function handleReady() {
   console.log("jquery is loaded!")
   // handle the click button
   $( '#submitBtn' ).on('click', addGuess);
-  // get request
-  getRequest();
 }
 
 function addGuess(){
@@ -23,10 +24,15 @@ function addGuess(){
     url: '/new-guesses',
     method: 'POST',
     data: newGuess
-  }).then(response => {
+  }).then(function (response) => {
     console.log(response); // testing for response values
+    // this will be our response so we can see it later
+    guessesArray = response;
     getRequest();
-  }) // end .then function
+    randomCheck();
+  }).catch(err => {
+    console.log('error in addGuess function')
+  })
 
   //empty inputs
   $('#playerOneIn').val(''),
@@ -45,6 +51,7 @@ function getRequest(){
     url: '/new-guesses'
   }).then(function (response){
     console.log(response);
+    guessesArray = response;
     //empty DOM
     $('#guess').empty();
   // append guesses to the DOM of localhost:5000/new-guesses
@@ -56,5 +63,22 @@ function getRequest(){
       <li>Player 4\'s guess: ${guess.playerFour}</li>
       `)
     }
+    // Update DOM and show Game round numbers
+    $('#numGames').text(`${response.length}`)
+  }).catch(err =>{
+    console.log('error in getRequest function');
   })
+}
+
+function randomCheck(){
+  $.ajax({
+    method: 'GET',
+    url: '/answer-eval'
+  }).then(function(response) => {
+    randomCheckArray = response
+    console.log(randomCheckArray)
+  }).catch(err => {
+    console.log('error in randomCheck function')
+  })
+
 }
