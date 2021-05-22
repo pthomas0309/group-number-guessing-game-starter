@@ -1,21 +1,33 @@
 $(document).ready(handleReady);
 
-let randomCheckArray = [];
-let guessesArray = [];
-
 function handleReady() {
   console.log("jquery is loaded!")
   // handle the click button
   $( '#submitBtn' ).on('click', addGuess);
+  $('#winningPlayer').on('click', '.reset', resetGame)
+}
+
+function resetGame(){
+  $(this).closest('#winningPlayer').empty();
+  $('#inputs').show();
+  $('#guess').empty();
+  $('#numGames').empty();
+  $('#numGames').append('0');
+  $.ajax({
+    url: '/reroll-answer',
+    method: 'GET'
+  }).then(response => {
+    console.log(response);
+  })
 }
 
 function addGuess(){
   //gather input values
-  let newGuess={
-    playerOne: $('#playerOneIn').val(),
-    playerTwo: $('#playerTwoIn').val(),
-    playerThree: $('#playerThreeIn').val(),
-    playerFour: $('#playerFourIn').val()
+  let newRound={
+    playerOne: {guess: $('#playerOneIn').val()},
+    playerTwo:{guess: $('#playerTwoIn').val()},
+    playerThree: { guess: $('#playerThreeIn').val()},
+    playerFour: {guess: $('#playerFourIn').val()}
   }
   // add to array,  which is in the server.js files
   // push it to that array
@@ -23,13 +35,11 @@ function addGuess(){
   $.ajax({
     url: '/new-guesses',
     method: 'POST',
-    data: newGuess
-  }).then(function (response) => {
+    data: newRound
+  }).then(response => {
     console.log(response); // testing for response values
     // this will be our response so we can see it later
-    guessesArray = response;
     getRequest();
-    randomCheck();
   }).catch(err => {
     console.log('error in addGuess function')
   })
@@ -51,16 +61,28 @@ function getRequest(){
     url: '/new-guesses'
   }).then(function (response){
     console.log(response);
-    guessesArray = response;
     //empty DOM
     $('#guess').empty();
-  // append guesses to the DOM of localhost:5000/new-guesses
-  for (let guess of response){
+    for(let round of response){
+      if (round.playerOne.winner === true){
+        $('#inputs').hide();
+        $('#winningPlayer').append(`<h2>WINNER: PLAYER ONE</h2><h3>GUESS: ${round.playerOne.guess}</h3><button class="reset">RESET</button>`)
+      } else if (round.playerTwo.winner === true){
+        $('#inputs').hide();
+        $('#winningPlayer').append(`<h2>WINNER: PLAYER TWO</h2><h3>GUESS: ${round.playerTwo.guess}</h3><button class="reset">RESET</button>`)
+      } else if (round.playerThree.winner === true){
+        $('#inputs').hide();
+        $('#winningPlayer').append(`<h2>WINNER: PLAYER THREE</h2><h3>GUESS: ${round.playerThree.guess}</h3><button class="reset">RESET</button>`)
+      } else if (round.playerFour.winner === true){
+        $('#inputs').hide();
+        $('#winningPlayer').append(`<h2>WINNER: PLAYER FOUR</h2><h3>GUESS: ${round.playerFour.guess}</h3><button class="reset">RESET</button>`)
+      }
+    // append guesses to the DOM of localhost:5000/new-guesses
     $('#guess').append(`
-      <li>Player 1\'s guess: ${guess.playerOne}</li>
-      <li>Player 2\'s guess: ${guess.playerTwo}</li>
-      <li>Player 3\'s guess: ${guess.playerThree}</li>
-      <li>Player 4\'s guess: ${guess.playerFour}</li>
+      <li>Player 1\'s guess: ${round.playerOne.guess} ${round.playerOne.tooHighOrTooLow}</li>
+      <li>Player 2\'s guess: ${round.playerTwo.guess} ${round.playerTwo.tooHighOrTooLow}</li>
+      <li>Player 3\'s guess: ${round.playerThree.guess} ${round.playerThree.tooHighOrTooLow}</li>
+      <li>Player 4\'s guess: ${round.playerFour.guess} ${round.playerFour.tooHighOrTooLow}</li>
       `)
     }
     // Update DOM and show Game round numbers
@@ -68,17 +90,4 @@ function getRequest(){
   }).catch(err =>{
     console.log('error in getRequest function');
   })
-}
-
-function randomCheck(){
-  $.ajax({
-    method: 'GET',
-    url: '/answer-eval'
-  }).then(function(response) => {
-    randomCheckArray = response
-    console.log(randomCheckArray)
-  }).catch(err => {
-    console.log('error in randomCheck function')
-  })
-
 }

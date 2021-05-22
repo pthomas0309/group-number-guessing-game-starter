@@ -13,6 +13,7 @@
 </head>
 <body>
     <h1>YOUR GAME HERE!</h1>
+    <div id="winningPlayer"></div>
     <div id="inputs">
       <input type="number" id="playerOneIn" placeholder="Player One's Guess">
       <input type="number" id="playerTwoIn" placeholder="Player Two's Guess">
@@ -21,7 +22,7 @@
       <button id="submitBtn" class="btn btn-outline-dark">Submit</button>
     </div>
     <div id="gamesPlayed">
-      <h1>Number of Guesses Made: <section id="numGames"></section></h1>
+      <h1>Number of Guesses Made: <span id="numGames">0</span></h1>
     </div>
     <ul id="guess" class="list-group"></ul>
 </body>
